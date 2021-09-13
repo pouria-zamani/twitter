@@ -1,9 +1,11 @@
 package repository.impl;
 
 import base.repository.impl.BaseRepositoryImpl;
+import com.github.javafaker.App;
 import domain.Tweet;
 import domain.User;
 import repository.TweetRepository;
+import util.ApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -23,8 +25,8 @@ public class TweetRepositoryImpl extends BaseRepositoryImpl<Tweet, Long> impleme
     @Override
     public List<Tweet> findByUserID(Long userID) {
         Query query = entityManager.createQuery
-                ("from tweet_table t where t.user_id = :user_id", Tweet.class);
-        query.setParameter("user_id", userID);
+                ("from Tweet t where t.user = :user_id", Tweet.class);
+        query.setParameter("user_id", ApplicationContext.getCurrentUser());
         try{
             return query.getResultList();
         } catch(NoResultException e) {

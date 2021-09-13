@@ -2,15 +2,13 @@ package repository.impl;
 
 import base.repository.impl.BaseRepositoryImpl;
 import domain.Comment;
-import domain.Like;
 import domain.Tweet;
-import domain.User;
 import repository.CommentRepository;
-
-import javax.jws.soap.SOAPBinding;
+import util.ApplicationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.List;
 
 public class CommentRepositoryImpl extends BaseRepositoryImpl<Comment, Long> implements CommentRepository {
     public CommentRepositoryImpl(EntityManager entityManager) {
@@ -25,7 +23,7 @@ public class CommentRepositoryImpl extends BaseRepositoryImpl<Comment, Long> imp
     @Override
     public Comment findByUserID(Long userID) {
         Query query = entityManager.createQuery
-                ("from comment_table c where c.user_id = :user_id", Comment.class);
+                ("from Comment c where c.user = :user_id", Comment.class);
         query.setParameter("user_id", userID);
         try{
             return (Comment) query.getSingleResult();
@@ -35,12 +33,12 @@ public class CommentRepositoryImpl extends BaseRepositoryImpl<Comment, Long> imp
     }
 
     @Override
-    public Comment findByTweetID(Long tweetID) {
+    public List findByTweet(Tweet tweet) {
         Query query = entityManager.createQuery
-                ("from comment_table c where c.tweet_id = :tweet_id", Comment.class);
-        query.setParameter("tweet_id", tweetID);
+                ("from Comment c where c.tweet = :tweet_id", Comment.class);
+        query.setParameter("tweet_id", tweet);
         try{
-            return (Comment) query.getSingleResult();
+            return query.getResultList();
         } catch(NoResultException e) {
             return null;
         }

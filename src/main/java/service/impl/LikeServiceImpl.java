@@ -17,13 +17,11 @@ public class LikeServiceImpl extends BaseServiceImpl<Like,Long, LikeRepository> 
 
     @Override
     public void edit() {
-        System.out.println("Enter tweet id:");
-        Long tweetID = ApplicationContext.getNumberScanner().nextLong();
-        Like like = repository.findByTweetID(tweetID);
-        System.out.println("Enter user id");
-        Long userID = ApplicationContext.getNumberScanner().nextLong();
-        Like like2 = repository.findByUserID(userID);
-        if(like2.getId() == like.getId())
+        System.out.println("Enter like id:");
+        Long likeID = ApplicationContext.getNumberScanner().nextLong();
+        Like like = repository.findById(likeID);
+        User user = ApplicationContext.getCurrentUser();
+        if(like.getUser().getId() == user.getId() && like.getDeleted()==null)
         {
             System.out.println("Are you sure you want to change your opinion?(if yes enter 1)");
             int n = ApplicationContext.getNumberScanner().nextInt();
@@ -45,9 +43,7 @@ public class LikeServiceImpl extends BaseServiceImpl<Like,Long, LikeRepository> 
         System.out.println("Enter tweet id:");
         Long tweetID = ApplicationContext.getNumberScanner().nextLong();
         Tweet tweet = ApplicationContext.getTweetRepository().findById(tweetID);
-        System.out.println("Enter user id");
-        Long userID = ApplicationContext.getNumberScanner().nextLong();
-        User user = ApplicationContext.getUserRepository().findById(userID);
+        User user = ApplicationContext.getCurrentUser();
         like.setUser(user);
         like.setTweet(tweet);
 
@@ -66,13 +62,11 @@ public class LikeServiceImpl extends BaseServiceImpl<Like,Long, LikeRepository> 
 
     @Override
     public void delete() {
-        System.out.println("Enter tweet id:");
-        Long tweetID = ApplicationContext.getNumberScanner().nextLong();
-        Like like = repository.findByTweetID(tweetID);
-        System.out.println("Enter user id");
-        Long userID = ApplicationContext.getNumberScanner().nextLong();
-        Like like2 = repository.findByUserID(userID);
-        if(like.getId() == like2.getId())
+        System.out.println("Enter like id:");
+        Long likeID = ApplicationContext.getNumberScanner().nextLong();
+        Like like = repository.findById(likeID);
+        User user = ApplicationContext.getCurrentUser();
+        if(like.getUser().getId() == user.getId() && like.getDeleted()==null)
         {
             System.out.println("Are you sure you want to delete your opinion?(if yes enter 1)");
             int n = ApplicationContext.getNumberScanner().nextInt();

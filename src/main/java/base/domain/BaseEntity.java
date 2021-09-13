@@ -1,16 +1,13 @@
 package base.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class BaseEntity<ID> {
     public static final String IS_DELETED = "is_deleted";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private ID id;
 
     @Column(name = IS_DELETED, columnDefinition = "TINYINT(1)")

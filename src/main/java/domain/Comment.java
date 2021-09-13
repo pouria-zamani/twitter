@@ -69,7 +69,7 @@ public class Comment extends BaseEntity<Long> {
     @Override
     public String toString() {
         return "Comment{" +
-                "content='" + content +
+                "content=" + content +
                 ", user=" + user.getUserName() +
                 '}';
     }

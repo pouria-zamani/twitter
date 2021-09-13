@@ -21,16 +21,13 @@ public class User extends BaseEntity<Long> {
     @Column(name = "password")
     private String password;
 
-    @OneToMany
-    @JoinColumn(name = "tweet_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Tweet> tweets;
 
-    @OneToMany
-    @JoinColumn(name = "comment_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany
-    @JoinColumn(name = "like_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Like> likes;
 
     public User(String firstName, String lastName, String userName, String password, List<Tweet> tweets, List<Comment> comments, List<Like> likes) {
@@ -105,9 +102,9 @@ public class User extends BaseEntity<Long> {
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userName='" + userName + '\'' +
+                "firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", userName=" + userName +
                 '}';
     }
 }

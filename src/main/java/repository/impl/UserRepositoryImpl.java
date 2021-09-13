@@ -21,7 +21,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Long> implement
     @Override
     public User findByUsername(String username) {
         Query query = entityManager.createQuery
-                ("from user_table where user_name = " + username, User.class);
+                ("from User U where U.userName = :user_name", User.class);
+        query.setParameter("user_name",username);
         try{
             return (User) query.getSingleResult();
         } catch(NoResultException e) {

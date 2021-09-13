@@ -4,13 +4,14 @@ import base.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "tweet_table")
 public class Tweet extends BaseEntity<Long> {
-    @Column(length = 280,name = "tweet_content")
+    @Column(length = 280, name = "tweet_content")
     private String content;
 
     @Column(name = "tweet_date")
@@ -20,13 +21,11 @@ public class Tweet extends BaseEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "like_id")
-    private List<Like> likes;
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+    private List<Like> likes = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "comment_id")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public Tweet(String content, LocalDateTime date, User user, List<Like> likes, List<Comment> comments) {
         this.content = content;
@@ -81,9 +80,17 @@ public class Tweet extends BaseEntity<Long> {
 
     @Override
     public String toString() {
+        int likeNum = 0;
+        for (Like like : likes) {
+            if(like.isLike())
+                likeNum++;
+            else
+                likeNum--;
+        }
+
         return "Tweet{" +
-                "content='" + content +
-                ", likes=" + likes.size() +
+                "content=" + content +
+                ", likes=" + likeNum +
                 ", comments=" + comments +
                 '}';
     }

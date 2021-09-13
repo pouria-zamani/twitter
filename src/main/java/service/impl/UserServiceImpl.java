@@ -10,12 +10,13 @@ import util.ApplicationContext;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
     public UserServiceImpl(UserRepository repository) {
         super(repository);
     }
 
     private User user;
+
     @Override
     public void signUp() {
         User user = new User();
@@ -40,7 +41,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         String password = ApplicationContext.getStringScanner().next();
         user.setPassword(password);
         repository.save(user);
-        System.out.println("Signed up Syccessfully!");
+        System.out.println("Signed up Successfully!");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         System.out.println("Enter username:");
         String userName = ApplicationContext.getStringScanner().next();
 
-        while (repository.findByUsername(userName) != null) {
+        while (repository.findByUsername(userName) != null && user.getUserName() == userName) {
             System.out.println("\nUsername not available!");
             System.out.println("Enter username:");
             userName = ApplicationContext.getStringScanner().next();
@@ -79,10 +80,10 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     public void deleteAccount() {
         System.out.println("Are you sure to delete your account?(if yes enter 1)");
         int n = ApplicationContext.getNumberScanner().nextInt();
-        if(n == 1) {
+        if (n == 1) {
             repository.deleteById(user.getId());
             System.out.println("Your account deleted Successfully!");
-        }else
+        } else
             System.out.println("Account not deleted!");
     }
 
@@ -108,8 +109,12 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         System.out.println("Enter Password:");
         String passWord = ApplicationContext.getStringScanner().next();
 
-        if(repository.findByUsername(userName) != null &&
+        if (repository.findByUsername(userName) != null &&
                 repository.findByUsername(userName).getPassword().equals(passWord)) {
+            if (repository.findByUsername(userName).getDeleted() != null) {
+                System.out.println("Your Account has been deleted!create another account!");
+                return false;
+            }
             this.user = repository.findByUsername(userName);
             ApplicationContext.setCurrentUser(this.user);
 

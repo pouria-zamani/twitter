@@ -1,6 +1,7 @@
 package util;
 
 import com.github.javafaker.App;
+import domain.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
@@ -24,27 +25,22 @@ public class ApplicationRun {
                         if (!ApplicationContext.getUserService().login())
                             System.out.println("\nUsername Or Password Is Wrong!");
                         else {
-
                             loginRun();
                             run = false;
                         }
                         break;
                     case 3:
-                        ApplicationContext.getUserService().searchByUsername();
+                        User user = ApplicationContext.getUserService().searchByUsername();
+                        if(user != null && user.getDeleted()==null)
+                            System.out.println(user);
+                        else
+                            System.out.println("The User Doesn't exist!");
                         break;
                     case 4:
-                        run = false;
-                        break;
+                        System.exit(0);
                     default:
                         System.out.println("\nInvalid Input!");
                 }
-
-                if (mainMenuOption != 4) {
-                    System.out.println("Close?[y/n]");
-                    if (ApplicationContext.getStringScanner().next().toLowerCase().startsWith("y"))
-                        run = false;
-                }
-
             } catch (InputMismatchException e) {
                 System.out.println("\nInvalid Input!");
             }
@@ -54,7 +50,6 @@ public class ApplicationRun {
     public void loginRun() {
         boolean run = true;
         while (run) {
-
             try {
                 ApplicationContext.getMenu().printSecondMenu();
                 int loginMenuOption = new Scanner(System.in).nextInt();
@@ -101,9 +96,10 @@ public class ApplicationRun {
                         break;
                     case 2:
                         ApplicationContext.getUserService().deleteAccount();
+                        ApplicationContext.getApplicationRun().mainRun();
                         break;
                     case 3:
-                        ApplicationContext.getApplicationRun().mainRun();
+                        ApplicationContext.getApplicationRun().loginRun();
                         break;
                     case 4:
                         System.exit(0);
@@ -122,7 +118,7 @@ public class ApplicationRun {
         while (run) {
 
             try {
-                ApplicationContext.getMenu().printSecondMenu();
+                ApplicationContext.getMenu().printLikeMenu();
                 int likeMenuOption = new Scanner(System.in).nextInt();
 
                 switch (likeMenuOption) {
@@ -136,7 +132,7 @@ public class ApplicationRun {
                         ApplicationContext.getLikeService().delete();
                         break;
                     case 4:
-                        ApplicationContext.getApplicationRun().mainRun();
+                        ApplicationContext.getApplicationRun().loginRun();
                         break;
                     case 5:
                         System.exit(0);
@@ -155,7 +151,7 @@ public class ApplicationRun {
         while (run) {
 
             try {
-                ApplicationContext.getMenu().printSecondMenu();
+                ApplicationContext.getMenu().printTweetMenu();
                 int tweetMenuOption = new Scanner(System.in).nextInt();
 
                 switch (tweetMenuOption) {
@@ -179,7 +175,7 @@ public class ApplicationRun {
                         ApplicationContext.getTweetService().deleteTweet();
                         break;
                     case 7:
-                        ApplicationContext.getApplicationRun().mainRun();
+                        ApplicationContext.getApplicationRun().loginRun();
                         break;
                     case 8:
                         System.exit(0);
@@ -198,7 +194,7 @@ public class ApplicationRun {
         while (run) {
 
             try {
-                ApplicationContext.getMenu().printSecondMenu();
+                ApplicationContext.getMenu().printCommentMenu();
                 int commentRunOption = new Scanner(System.in).nextInt();
 
                 switch (commentRunOption) {
@@ -215,7 +211,7 @@ public class ApplicationRun {
                         ApplicationContext.getCommentService().delete();
                         break;
                     case 5:
-                        ApplicationContext.getApplicationRun().mainRun();
+                        ApplicationContext.getApplicationRun().loginRun();
                         break;
                     case 6:
                         System.exit(0);
