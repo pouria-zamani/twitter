@@ -3,6 +3,7 @@ package repository.impl;
 import base.repository.impl.BaseRepositoryImpl;
 import domain.Comment;
 import domain.Tweet;
+import domain.User;
 import repository.CommentRepository;
 import util.ApplicationContext;
 import javax.persistence.EntityManager;
@@ -21,10 +22,10 @@ public class CommentRepositoryImpl extends BaseRepositoryImpl<Comment, Long> imp
     }
 
     @Override
-    public Comment findByUserID(Long userID) {
+    public Comment findByUser(User user) {
         Query query = entityManager.createQuery
                 ("from Comment c where c.user = :user_id", Comment.class);
-        query.setParameter("user_id", userID);
+        query.setParameter("user_id", user);
         try{
             return (Comment) query.getSingleResult();
         } catch(NoResultException e) {

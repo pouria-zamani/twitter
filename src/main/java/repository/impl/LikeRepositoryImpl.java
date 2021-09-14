@@ -3,7 +3,9 @@ package repository.impl;
 import base.repository.impl.BaseRepositoryImpl;
 import domain.Like;
 import domain.Tweet;
+import domain.User;
 import repository.LikeRepository;
+import util.ApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,9 +24,10 @@ public class LikeRepositoryImpl extends BaseRepositoryImpl<Like, Long> implement
 
     @Override
     public Like findByUserID(Long userID) {
+        User user = ApplicationContext.getUserRepository().findById(userID);
         Query query = entityManager.createQuery
                 ("from Like l where l.user = :user_id", Like.class);
-        query.setParameter("user_id", userID);
+        query.setParameter("user_id", user);
         try{
             return (Like) query.getSingleResult();
         } catch(NoResultException e) {

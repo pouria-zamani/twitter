@@ -1,3 +1,5 @@
+import base.repository.impl.BaseRepositoryImpl;
+import domain.User;
 import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
 import util.ApplicationContext;

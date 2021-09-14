@@ -24,9 +24,10 @@ public class TweetRepositoryImpl extends BaseRepositoryImpl<Tweet, Long> impleme
 
     @Override
     public List<Tweet> findByUserID(Long userID) {
+        User user = ApplicationContext.getUserRepository().findById(userID);
         Query query = entityManager.createQuery
                 ("from Tweet t where t.user = :user_id", Tweet.class);
-        query.setParameter("user_id", ApplicationContext.getCurrentUser());
+        query.setParameter("user_id", user);
         try{
             return query.getResultList();
         } catch(NoResultException e) {
